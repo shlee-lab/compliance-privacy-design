@@ -1,0 +1,29 @@
+{
+  "survey": "Survey and Diary of Consumer Payment Choice, Federal Reserve Bank of Atlanta",
+  "url": "https://www.atlantafed.org/en/research-and-data/surveys/survey-and-diary-of-consumer-payment-choice",
+  "alpha": "Weighted active wallet-days divided by accepted debits. Each interval is the respondent-cluster bootstrap 2.5th and 97.5th percentiles from 10,000 replicates, retaining the respondent's day weights under a 10,000 USD daily cap. Use the outer endpoints across survey waves.",
+  "waves": {
+    "2024": {
+      "days": 14715,
+      "respondents": 5222,
+      "debits": 20817,
+      "active_per_debit": 0.394276870230532,
+      "interval": [
+        0.3849854534929734,
+        0.40350523284255646
+      ],
+      "archive_sha256": "9d79244687794da4755494dcf763ddcdb805888ca70ead6edc4fa055717c0a50"
+    },
+    "2025": {
+      "days": 16141,
+      "respondents": 5736,
+      "debits": 21753,
+      "active_per_debit": 0.4014713758797278,
+      "interval": [
+        0.3924770941397158,
+        0.4105432696110254
+      ],
+      "archive_sha256": "75c1456bc4e25761afd157b72e35b362968f07327ebcb1e72fa82c4e6f89e68c"
+    }
+  }
+}

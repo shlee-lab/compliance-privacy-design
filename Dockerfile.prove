@@ -1,0 +1,20 @@
+FROM golang:1.25.12-bookworm@sha256:6359592445455f2dbe2412bed411336035bc019a50017720d77454ffdd6d0f82 AS prover
+WORKDIR /src
+COPY prover/go.mod prover/go.sum ./
+RUN go mod download
+COPY prover/*.go ./
+RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /fresh-prover .
+
+FROM node:24-bookworm-slim@sha256:dc26ae92c9fb15cf6b1d63e20f0944b2efe0f115b20e00be48fb23fceb061c54 AS compiler
+WORKDIR /compiler
+COPY prover/solc/*.json ./
+RUN npm ci --ignore-scripts --no-audit --no-fund
+
+FROM ghcr.io/foundry-rs/foundry:v1.7.1@sha256:8347b728d5d393dac1c018691b36f506d23b9dcd78341d40ea0fcb11c3a19cdd AS foundry
+FROM python:3.12-slim-bookworm@sha256:935c3c5b12357a7e10caa9c1e6ca5692344d97cf229832ef584be2cec9fc03df
+COPY --from=prover /fresh-prover /usr/local/bin/
+COPY --from=foundry /usr/local/bin/anvil /usr/local/bin/
+COPY --from=compiler /usr/local/bin/node /usr/local/bin/
+COPY --from=compiler /compiler/node_modules /opt/compiler/node_modules
+ENV PATH="/opt/compiler/node_modules/.bin:${PATH}" HOME=/tmp PYTHONDONTWRITEBYTECODE=1
+RUN solcjs --version && anvil --version
