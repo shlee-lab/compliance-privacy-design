@@ -20,6 +20,19 @@ Read each label as public route, then private route. H reconstructs spending fro
 
 The replay uses synthetic payments and precomputed proofs at two and eight wallets. It checks each receipt against the original gas measurement. The map combines those receipts with archived measurements for two through eight wallets. Gas covers limit checks and mode switches. Deployment, token transfers and proof generation are outside the measurement.
 
+## A two-wallet gas boundary
+
+The first row of `results/regions.csv` compares MR (SV in the figure) with HH. To check its inputs in `results/receipts.csv`, filter on `n=2` and the day, zero-based payment index and operation below. HH has no entry or return transaction.
+
+| Day | Payment | Operation | MR gas | HH gas | Difference |
+| --- | ---: | --- | ---: | ---: | ---: |
+| bd_a3_010 | 0 | public | 48,880 | 367,272 | −318,392 |
+| bd_a2_11 | 0 | private | 373,393 | 367,224 | 6,169 |
+| bd_b5_01001 | 4 | enter | 395,928 | 0 | 395,928 |
+| bd_b5_01100 | 3 | return | 398,975 | 0 | 398,975 |
+
+With first-payment share 0.41054327, these differences give `q < 0.65364 - 0.48096s` on the first boundary segment. Here `q` is the private payment share and `s` the share of adjacent same-wallet payments that switch routes. The segment ends at `s = 0.12053` (rounded).
+
 ## Fresh proofs
 
 ```sh
